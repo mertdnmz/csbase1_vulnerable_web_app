@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Invitation</title>
+    </head>
+    <body>
+        <a th:href="@{/signups}">My Events</a>
+        <h2>Invitation</h2> 
+        <p>Dear <span th:text="${signup.account.username}">username</span>,</p> 
+        <p>You are invited to the event : <span th:text="${signup.name}">eventname</span>.</p> 
+        <p>The event takes place at <span th:text="${signup.address}">eventaddress</span>.</p> 
+    </body></html>

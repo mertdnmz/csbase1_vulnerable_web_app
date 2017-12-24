@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>Signups</title>
+    </head>
+    <body>
+        
+        <a th:href="@{/form}">Home</a>
+
+        <h2>Events you have signed up for :</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Event Name</th><th>Event Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${signups.empty}">
+                    <td colspan="2">You have not signed up for any events.</td>
+                </tr>
+                <tr th:each="su : ${signups}">
+                    <td><a th:href="@{/signups/{id}(id=${su.id})}" th:text="${su.name}">Name</a></td>
+                    <td th:text="${su.address}">Address</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </body>
+</html>
