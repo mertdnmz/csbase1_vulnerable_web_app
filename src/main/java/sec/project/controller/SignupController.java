@@ -1,6 +1,8 @@
 package sec.project.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -50,9 +52,14 @@ public class SignupController {
         https://www.owasp.org/index.php/Top_10_2007-Insecure_Direct_Object_Reference
         FIX_FLAW : Flaw_Print_Others_Invitation
         if (!authorizeInvitationAccess(su, authentication)) {
-            return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
+            return "redirect:/signups";
         }
         */
+
+        Signup ex = new Signup();                         
+        ex.setName(su.getName());                          
+        Example<Signup> example = Example.of(ex);
+        List<Signup> allSignupsForEvent = signupRepository.findAll(example);
         
         //Developer's note : I don't like templates! What can go wrong...
         String name = su.getAccount().getUsername();
@@ -71,13 +78,22 @@ public class SignupController {
             "       <p>Dear " + name + ",</p>" + 
             "       <p>You are invited to the event : " + eventName + ".</p>" + 
             "       <p>The event takes place at " + eventAddress + ".</p>" + 
-            "    </body></html>";
+            "       <h2>The following people signed up to an event with the same name! Check event locations, maybe they are going to the same event!</h2>";
+        for (Signup suForEvent : allSignupsForEvent) {
+            html += "<p>";
+            html += suForEvent.getAccount().getUsername();
+            html += " - ";
+            html += suForEvent.getAddress();
+            html += "</p>";
+        }
+        html += "    </body></html>";
         return html;//Use Thymeleaf template to prevent injection. Comment out. FIX_FLAW : Flaw_Xss
         
         
         //Use Thymeleaf template to prevent injection. FIX_FLAW : Flaw_Xss
         /*
         model.addAttribute("signup", su);
+        model.addAttribute("allsignups", allSignupsForEvent);
         return "invitation";  
         */
     }

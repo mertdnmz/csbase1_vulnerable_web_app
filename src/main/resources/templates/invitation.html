@@ -9,4 +9,6 @@
         <p>Dear <span th:text="${signup.account.username}">username</span>,</p> 
         <p>You are invited to the event : <span th:text="${signup.name}">eventname</span>.</p> 
         <p>The event takes place at <span th:text="${signup.address}">eventaddress</span>.</p> 
+        <h2>The following people signed up to an event with the same name! Check event locations, maybe they are going to the same event!</h2> 
+        <p th:each="su : ${allsignups}" th:text="${su.account.username} + ' - ' + ${su.address}">participant username and event address</p>
     </body></html>
